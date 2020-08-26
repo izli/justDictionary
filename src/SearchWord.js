@@ -6,6 +6,8 @@ import { Button } from '@material-ui/core';
 const createStyles = makeStyles(() => ({
   searchWordContainer: {
     marginTop: '2em',
+    display: 'flex',
+    justifyContent: 'center',
   },
   buttonStyle: {
     marginLeft: '2em',
