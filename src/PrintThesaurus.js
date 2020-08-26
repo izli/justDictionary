@@ -4,16 +4,29 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Typography } from '@material-ui/core';
 
 const createStyles = makeStyles(() => ({
-  descListItem: {
+  description: {
     display: 'flex',
     color: 'green',
-    flexDirection: 'column',
+    flexDirection: 'row',
+    paddingLeft: '8px',
   },
   descContainer: {
     display: 'flex',
     flexDirection: 'column',
   },
   allDesc: { color: 'blue' },
+
+  synItem: {
+    display: 'flex',
+    paddingLeft: '8px',
+    paddingRight: '8px',
+  },
+  synList: {
+    flexDirection: 'row',
+    display: 'flex',
+    flexWrap: 'wrap',
+    marginBottom: '16px',
+  },
 }));
 
 export function PrintThesaurus(props) {
@@ -25,28 +38,30 @@ export function PrintThesaurus(props) {
       let allSyns = [];
       for (let j = 0; j < props.data[0].values[i].syns.length; j++) {
         allSyns.push(
-          <Typography component={'span'} variant="body2">
-            the second row {props.data[0].values[i].syns[j]}
+          <Typography variant="body2" className={myStyles.synItem}>
+            {props.data[0].values[i].syns[j]}
           </Typography>
         );
       }
       console.log('all syns', { allSyns });
       allDesc.push(
-        <Typography
-          component={'span'}
-          variant="body1"
-          className={myStyles.descListItem}
-        >
-          Description {i}: {props.data[0].values[i].desc}
-          <div>{allSyns}</div>
-        </Typography>
+        <div>
+          <Typography
+            component={'span'}
+            variant="body1"
+            className={myStyles.description}
+          >
+            Description {i}: {props.data[0].values[i].desc}
+          </Typography>
+          <div className={myStyles.synList}>{allSyns}</div>
+        </div>
       );
     }
 
     return (
       <div className={myStyles.descContainer}>
-        <div>First desc: {props.data[0].values[0].desc}</div>
-        <div className={myStyles.allDesc}>All descriptions {allDesc}</div>
+        <Typography variant="h5">Type: {props.data[0].type}</Typography>
+        <div className={myStyles.allDesc}>{allDesc}</div>
       </div>
     );
   }
