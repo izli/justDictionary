@@ -1,18 +1,20 @@
 import React, { useState } from 'react';
-import { GetWords } from './GetWord.js';
-import { CreateHeader } from './CreateHeader.js';
+import { SearchResults } from './SearchResults.js';
+import { SearchWord } from './SearchWord.js';
 import './App.css';
 
 function App() {
-  // const [responseArray, setResponseArray] = useState([]);
+  const [searchWord, setSearchWord] = useState('');
+
+  function onSetSearchWord(textValue) {
+    setSearchWord(textValue);
+  }
 
   return (
     <div className="App">
-      <CreateHeader />
-      <GetWords
-        searchTerm={'design'}
-        // setResponseArray={setResponseArray}
-      ></GetWords>
+      {/* <CreateHeader /> */}
+      <SearchWord onSetSearchWord={onSetSearchWord} />
+      <SearchResults searchWord={searchWord} />
     </div>
   );
 }
