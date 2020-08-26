@@ -1,6 +1,22 @@
 import React, { useEffect, useState } from 'react';
-
+import { makeStyles } from '@material-ui/core/styles';
 import { parseData } from './parseData';
+import { PrintThesaurus } from './PrintThesaurus';
+//import { findByLabelText } from '@testing-library/react';
+
+const createStyles = makeStyles(() => ({
+  container: {
+    display: 'flex',
+  },
+  subContainer: {
+    flexBasis: '0',
+    flexGrow: '1',
+    width: '100%',
+    display: 'flex',
+    paddingLeft: '1em',
+    paddingRight: '1em',
+  },
+}));
 
 export function useGetThesaurus(searchWord, setAllDataArray) {
   useEffect(() => {
@@ -18,14 +34,23 @@ export function useGetThesaurus(searchWord, setAllDataArray) {
 }
 
 export function SearchResults(props) {
+  const myStyles = createStyles();
   const [results, setResults] = useState([]);
-  console.log('test');
+
   useGetThesaurus(props.searchWord, setResults);
+
   const data = parseData(results);
+  console.log('data: ', data);
+
   return (
-    <div>
-      <div>data thesaurus: {JSON.stringify(data)}</div>
-      <div>dictionary: {JSON.stringify(data)}</div>
+    <div className={myStyles.container}>
+      <div className={myStyles.subContainer}>
+        <PrintThesaurus data={data} />
+      </div>
+
+      <div className={myStyles.subContainer}>
+        dictionary: {JSON.stringify(data)}
+      </div>
     </div>
   );
   // return <Typography variant="body1">This is the thesaurus div</Typography>;
