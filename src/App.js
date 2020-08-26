@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { SearchResults } from './SearchResults.js';
 import { SearchWord } from './SearchWord.js';
-import './App.css';
 
 function App() {
   const [searchWord, setSearchWord] = useState('');
 
   function onSetSearchWord(textValue) {
     setSearchWord(textValue);
+    setSearchWord('design'); //remove this when not needed anymore
   }
 
   return (
