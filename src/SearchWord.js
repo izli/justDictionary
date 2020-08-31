@@ -21,7 +21,6 @@ function userEntersText(event, setTextValue) {
 function searchWord(onSetSearchWord, textValue, setTextValue) {
   // console.log('this is the textvalue: ', textValue);
   onSetSearchWord(textValue);
-  setTextValue('');
 }
 
 export function SearchWord(props) {
