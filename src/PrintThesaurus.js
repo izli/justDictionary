@@ -67,3 +67,33 @@ export function PrintThesaurus(props) {
   }
   return <div>Nothing here</div>;
 }
+
+//LOOP FOR NOUNS - row 42->
+/*
+    FLAT()q
+    const allDesc = props.data[0].values.map((element1) => 
+        
+        const allSyns = element1.syns.map((element2) => 
+            <Typography variant="body2" className={myStyles.synItem}>
+                {props.data[0].values[i].syns[j]}
+            </Typography>)
+
+        <div className={myStyles.descContainer}>
+          <Typography
+            component={'span'}
+            variant="body1"
+            className={myStyles.descText}
+          >
+            Description {i}: {props.data[0].values[i].desc}
+          </Typography>
+          <Typography>Example: {props.data[0].values[i].example}</Typography>
+          <div>
+            <Typography variant="body1" className={myStyles.subHeader}>
+              Synonyms
+            </Typography>
+            <div className={myStyles.synList}>{allSyns}</div>
+          </div>
+        </div>
+        
+        )
+    */
