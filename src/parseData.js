@@ -3,6 +3,7 @@ export function parseData(allDataArray) {
     type: element1.fl,
     values: element1.def[0].sseq.map((element2) => ({
       desc: element2[0][1].dt[0][1],
+      example: element2[0][1].dt[1][1][0].t,
       syns: element2[0][1].syn_list[0].map((syn1) => syn1.wd),
       rel: element2[0][1].rel_list,
     })),
