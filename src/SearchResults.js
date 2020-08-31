@@ -7,6 +7,7 @@ import { PrintThesaurus } from './PrintThesaurus';
 const createStyles = makeStyles(() => ({
   container: {
     display: 'flex',
+    marginTop: '2em',
   },
   subContainer: {
     flexBasis: '0',
