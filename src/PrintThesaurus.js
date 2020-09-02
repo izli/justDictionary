@@ -35,7 +35,6 @@ const createStyles = makeStyles(() => ({
 
 export function PrintThesaurus(props) {
   const myStyles = createStyles();
-
   if (props.data.length > 0) {
     let allDesc = [];
     for (let i = 0; i < props.data[0].values.length; i++) {
@@ -54,7 +53,7 @@ export function PrintThesaurus(props) {
             variant="body1"
             className={myStyles.descText}
           >
-            Description {i}: {props.data[0].values[i].desc}
+            Description {i + 1}: {props.data[0].values[i].desc}
           </Typography>
           <Typography>Example: {props.data[0].values[i].example}</Typography>
           <div>
