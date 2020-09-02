@@ -1,16 +1,57 @@
-export function parseThesData(allDataArray) {
-  let array2 = allDataArray.map((element1) => ({
-    type: element1.fl,
-    values: element1.def[0].sseq.map((element2) => ({
-      desc: element2[0][1].dt[0][1],
-      example: element2[0][1].dt[1][1][0].t,
-      syns: element2[0][1].syn_list[0].map((syn1) => syn1.wd),
-      rel: element2[0][1].rel_list,
-    })),
-  }));
-
-  return array2;
+export function parseThesData(allThesDataArray, searchWord) {
+  let parsedThesData = buildThesaurusResponse(allThesDataArray, searchWord);
+  return parsedThesData;
 }
+
+function buildThesaurusResponse(data, searchWord) {
+  return data.map((item) => ({
+    type: item.fl,
+    values: item.def[0].sseq.map((value) => thesParseValues(value)),
+  }));
+}
+
+function thesParseValues(value) {
+  //desc: value[0][1].dt[0][1]
+  //example: value[0][1].dt[1][1][0].t
+  return {
+    desc: thesParseDescription(value),
+    example: thesParseExample(value),
+    syns: thesParseSyns(value),
+    rels: thesParseRelated(value),
+  };
+}
+
+function thesParseDescription(value) {
+  return value[0][1].dt[0][1];
+}
+
+function thesParseExample(value) {
+  if (value[0][1].dt.length > 1) {
+    return value[0][1].dt[1][1][0].t;
+  }
+}
+
+function thesParseSyns(value) {
+  return value[0][1].syn_list[0].map((syn) => syn.wd);
+}
+
+function thesParseRelated(value) {
+  return value[0][1].rel_list;
+}
+
+// export function parseThesData(allDataArray) {
+//   let array2 = allDataArray.map((element1) => ({
+//     type: element1.fl,
+//     values: element1.def[0].sseq.map((element2) => ({
+//       desc: element2[0][1].dt[0][1],
+//       example: element2[0][1].dt[1][1][0].t,
+//       syns: element2[0][1].syn_list[0].map((syn1) => syn1.wd),
+//       rel: element2[0][1].rel_list,
+//     })),
+//   }));
+
+//   return array2;
+// }
 
 export function parseDictData(allDictDataArray, searchWord) {
   // debugger;
