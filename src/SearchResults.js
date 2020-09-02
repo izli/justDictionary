@@ -59,7 +59,7 @@ export function SearchResults(props) {
   useGetThesaurus(props.searchWord, setThesResults);
   useGetDictionary(props.searchWord, setDictResults);
 
-  const thesData = parseThesData(thesResults);
+  const thesData = parseThesData(thesResults, props.searchWord);
   const dictData = parseDictData(dictResults, props.searchWord);
 
   //JSON.stringify(data);
@@ -74,7 +74,6 @@ export function SearchResults(props) {
 
       <div className={myStyles.subContainer}>
         <PrintDictionary data={dictData}></PrintDictionary>
-        <pre>{JSON.stringify(dictData, null, 2)}</pre>
       </div>
     </div>
   );
