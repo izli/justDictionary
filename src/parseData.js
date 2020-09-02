@@ -11,8 +11,6 @@ function buildThesaurusResponse(data, searchWord) {
 }
 
 function thesParseValues(value) {
-  //desc: value[0][1].dt[0][1]
-  //example: value[0][1].dt[1][1][0].t
   return {
     desc: thesParseDescription(value),
     example: thesParseExample(value),
@@ -39,22 +37,7 @@ function thesParseRelated(value) {
   return value[0][1].rel_list;
 }
 
-// export function parseThesData(allDataArray) {
-//   let array2 = allDataArray.map((element1) => ({
-//     type: element1.fl,
-//     values: element1.def[0].sseq.map((element2) => ({
-//       desc: element2[0][1].dt[0][1],
-//       example: element2[0][1].dt[1][1][0].t,
-//       syns: element2[0][1].syn_list[0].map((syn1) => syn1.wd),
-//       rel: element2[0][1].rel_list,
-//     })),
-//   }));
-
-//   return array2;
-// }
-
 export function parseDictData(allDictDataArray, searchWord) {
-  // debugger;
   let tempArray = buildDictionaryResponse(allDictDataArray, searchWord);
   return tempArray;
 }
@@ -68,60 +51,28 @@ function dictParseItem(item, searchWord) {
   let reg = new RegExp(regPattern, 'g');
   if (item.meta.id.search(reg) > -1) {
     return {
-      definitions: item.def[0].sseq.map((definition) =>
-        dictParseDefinitionText(definition)
-      ),
-      explanations: item.def[0].sseq.map((definition) =>
-        dictParseExplanationText(definition)
-      ),
+      type: item.fl,
+      values: dictParseValues(item),
     };
   } else return;
 }
 
-function dictParseDefinitionText(definition) {
+function dictParseValues(item) {
+  return item.def.map((element1) => dictParseDefs(element1));
+}
+
+function dictParseDefs(element) {
   // debugger;
-  let tempDef = definition[0][1].dt[0][1];
+  let tempDef = element.sseq.map((element3) => dictParseDesc(element3));
   return tempDef;
 }
 
-function dictParseExplanationText(definition) {
-  // debugger;
-  if (definition[0][1].dt.length > 1) {
-    let tempExp = definition[0][1].dt[1][1][0].t;
-    let tempT = tempExp.t;
-    // debugger;
-    return tempExp;
+function dictParseDesc(element) {
+  let desc = element[0][1].dt[0][1];
+  let example = '';
+  if (element[0][1].dt.length > 1) {
+    example = element[0][1].dt[1][1][0].t;
   }
-  return;
+
+  return { desc, example };
 }
-/*
-SYNS
-  data[0].values[0].syns[0].wd
-  "arrangement"
-
-RELS
-  data[0].values[0].rel[0][0].wd
-  produces: "collusion"
-
-  data[0].values[0].rel[0][1].wd
-  produces: "conspiracy"
-
-  etc.
-
-  if (array2.length > 0) {
-    console.log('array1: ', array1);
-    console.log('array2: ', array2);
-    onSetParsedArray(array2);
-  }
-  */
-//   return (
-//     <div>
-//       <div>you searched for: {props.searchWord}</div>
-//       <div>all data array length: {array2.length}</div>
-//       <ul>
-//         {array2.map((item) => {
-//           return <li key="abc">{item.length}</li>;
-//         })}
-//       </ul>
-//     </div>
-//   );
