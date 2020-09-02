@@ -15,16 +15,6 @@ export function parseThesData(allDataArray) {
 export function parseDictData(allDictDataArray, searchWord) {
   // debugger;
   let tempArray = buildDictionaryResponse(allDictDataArray, searchWord);
-  // let parsedData = allDictDataArray.map((element1) => ({
-  //   type: element1.fl,
-  //   def1Type: element1.def[0].vd,
-  //   def1Values: element1.def[0].sseq.map((element2) => ({
-  //     desc: element2[0][1].dt[0][1],
-  //     example: element2[0][1].dt[1][1], //[1][0].t,
-  //   })),
-  // }));
-  // console.log('result', parsedData);
-  // return parsedData;
   return tempArray;
 }
 
@@ -35,8 +25,7 @@ export function buildDictionaryResponse(data, searchWord) {
 function dictParseItem(item, searchWord) {
   let regPattern = '^' + searchWord + ':?\\b';
   let reg = new RegExp(regPattern, 'g');
-  let tempMatch = item.meta.id.search(reg);
-  if (tempMatch > -1) {
+  if (item.meta.id.search(reg) > -1) {
     return {
       definitions: item.def[0].sseq.map((definition) =>
         dictParseDefinitionText(definition)
