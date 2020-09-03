@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { parseThesData, parseDictData } from './parseData';
+import { parseDictData } from './parseDictData';
 import { PrintThesaurus } from './PrintThesaurus';
 import { PrintDictionary } from './PrintDictionary';
 //import { findByLabelText } from '@testing-library/react';
+import { parseThesData } from './parseThesaurusData';
 
 const createStyles = makeStyles(() => ({
   container: {
@@ -59,12 +60,24 @@ export function SearchResults(props) {
   useGetThesaurus(props.searchWord, setThesResults);
   useGetDictionary(props.searchWord, setDictResults);
 
-  const thesData = parseThesData(thesResults, props.searchWord);
-  const dictData = parseDictData(dictResults, props.searchWord);
+  let thesData = parseThesData(thesResults, props.searchWord);
+  let dictData = parseDictData(dictResults, props.searchWord);
+
+  thesData = thesData.filter((element) => {
+    return element !== undefined;
+  });
+
+  dictData = dictData.filter((element) => {
+    return element !== undefined;
+  });
+
+  // for (let i = 0; i<dictData.length; i++){
+
+  // }
 
   //JSON.stringify(data);
   console.log('dataThes: ', thesData);
-  console.log('dictResults: ', dictResults);
+  console.log('dictData: ', dictData);
 
   return (
     <div className={myStyles.container}>
