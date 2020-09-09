@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { parseDictData } from './parseDictData';
-import { PrintThesaurus } from './PrintThesaurus';
 import { PrintDictionary } from './PrintDictionary';
 //import { findByLabelText } from '@testing-library/react';
-import { parseThesData } from './parseThesaurusData';
+import { cleanParsedData, removeUndefined } from './cleanParsedData';
 
 const createStyles = makeStyles(() => ({
   container: {
@@ -21,21 +20,6 @@ const createStyles = makeStyles(() => ({
     flexWrap: 'wrap',
   },
 }));
-
-export function useGetThesaurus(searchWord, setThesResults) {
-  useEffect(() => {
-    if (searchWord.length > 0) {
-      fetch(
-        `https://www.dictionaryapi.com/api/v3/references/thesaurus/json/${searchWord}?key=${process.env.REACT_APP_KEY_THESAURUS}`
-      )
-        .then((response) => response.json())
-        .then((data) => {
-          setThesResults(data);
-        });
-    }
-  }, [searchWord, setThesResults]);
-  return;
-}
 
 export function useGetDictionary(searchWord, setDictResults) {
   useEffect(() => {
@@ -54,42 +38,35 @@ export function useGetDictionary(searchWord, setDictResults) {
 
 export function SearchResults(props) {
   const myStyles = createStyles();
-  const [thesResults, setThesResults] = useState([]);
+
   const [dictResults, setDictResults] = useState([]);
 
-  useGetThesaurus(props.searchWord, setThesResults);
   useGetDictionary(props.searchWord, setDictResults);
+  debugger;
+  if (dictResults.length > 0) {
+    let dictData = parseDictData(dictResults, props.searchWord);
+    dictData = cleanParsedData(dictData);
+    dictData = removeUndefined(dictData);
 
-  let thesData = parseThesData(thesResults, props.searchWord);
-  let dictData = parseDictData(dictResults, props.searchWord);
+    //JSON.stringify(data);
+    console.log('dictData: ', dictData);
 
-  thesData = thesData.filter((element) => {
-    return element !== undefined;
-  });
-
-  dictData = dictData.filter((element) => {
-    return element !== undefined;
-  });
-
-  // for (let i = 0; i<dictData.length; i++){
-
-  // }
-
-  //JSON.stringify(data);
-  console.log('dataThes: ', thesData);
-  console.log('dictData: ', dictData);
-
-  return (
-    <div className={myStyles.container}>
-      <div className={myStyles.subContainer}>
-        <PrintThesaurus data={thesData} />
+    return (
+      <div className={myStyles.container}>
+        <div className={myStyles.subContainer}>
+          <PrintDictionary data={dictData}></PrintDictionary>
+        </div>
       </div>
+    );
+  } else {
+    return (
+      <div>
+        <div className={myStyles.subContainer}>Nothing in thesaurus</div>
 
-      <div className={myStyles.subContainer}>
-        <PrintDictionary data={dictData}></PrintDictionary>
+        <div className={myStyles.subContainer}>Nothing in dictionary</div>
       </div>
-    </div>
-  );
+    );
+  }
   // return <Typography variant="body1">This is the thesaurus div</Typography>;
 
   /* 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Section 1.10.32 of de Finibus Bonorum et Malorum, written by Cicero in 45 BC Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?';*/

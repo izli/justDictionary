@@ -7,7 +7,7 @@ function App() {
 
   function onSetSearchWord(textValue) {
     setSearchWord(textValue);
-    setSearchWord('design'); //remove this when not needed anymore
+    // setSearchWord('design'); //remove this when not needed anymore
   }
 
   return (

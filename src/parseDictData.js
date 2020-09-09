@@ -1,6 +1,7 @@
 export function parseDictData(allDictDataArray, searchWord) {
-  let tempArray = buildDictionaryResponse(allDictDataArray, searchWord);
-  return tempArray;
+  let parsedArray = buildDictionaryResponse(allDictDataArray, searchWord);
+
+  return parsedArray;
 }
 
 export function buildDictionaryResponse(data, searchWord) {
@@ -16,7 +17,6 @@ function dictParseItem(item, searchWord) {
       values: dictParseDefs(item),
     };
   } else {
-    console.log('Return null maybe, item', item);
     return;
   }
 }
@@ -33,8 +33,6 @@ function dictParseSSEQ(itemElement) {
 }
 
 function dictParseSSEQElem(sseqElement, origE) {
-  console.log('origE', origE);
-  console.log('parseElement', sseqElement);
   if (sseqElement.length > 1) {
     let tempBoth = sseqElement.map((subSseqElement) =>
       parseSubSSEQElem(subSseqElement)
@@ -48,7 +46,7 @@ function dictParseSSEQElem(sseqElement, origE) {
 
 function parseSubSSEQElem(subSseqElement) {
   if (subSseqElement[0] === 'bs') {
-    debugger;
+    // debugger;
     return parseSenseElement(subSseqElement);
   }
 
@@ -67,7 +65,6 @@ function parseSubSSEQElem(subSseqElement) {
 }
 
 function parseAllPseq(pseqElem) {
-  console.log('pseqElem', pseqElem);
   // debugger;
   if (pseqElem === 'pseq') {
     return;
@@ -85,7 +82,7 @@ function parseAllPseq(pseqElem) {
   }
 }
 function dictParseLong(longElement) {
-  debugger; //Tarvitaanko tätä koodia?
+  // debugger; //Tarvitaanko tätä koodia?
   if (longElement[0] === 'sense') {
     let result = parseSenseElement(longElement);
     return result;
@@ -109,7 +106,6 @@ function parseSenseElement(endElement) {
   }
 
   let desc = endElement[1].dt[0][1];
-  console.log('desc', desc);
   if (endElement[1].dt.length > 1) {
     example = endElement[1].dt[1][1].map((endExElement) =>
       mapAllExamples(endExElement)
@@ -120,4 +116,38 @@ function parseSenseElement(endElement) {
 
 function mapAllExamples(endExElement) {
   return endExElement.t;
+}
+
+export function removeUndefined(data) {
+  debugger;
+  let firstLevels = data.length;
+  for (let i = 0; i < firstLevels; i++) {
+    let secondLevels = data[i].values.length;
+
+    for (let j = 0; j < secondLevels; j++) {
+      //Might not be needed
+      if (data[i].values[0] === undefined) {
+        data[i].values.shift();
+      }
+      let thirdLevels = data[i].values[j].length;
+
+      for (let k = 0; k < thirdLevels; k++) {
+        // console.log('print third level k', data[i].values[j][k]);
+        //Might not be needed
+        if (data[i].values[j][0] === undefined) {
+          data[i].values[j].shift();
+        }
+
+        let fourthLevels = data[i].values[j][k].length;
+
+        for (let l = 0; l < fourthLevels; l++) {
+          //remove first undefined
+          if (data[i].values[j][k][0] === undefined) {
+            data[i].values[j][k].shift();
+          }
+        }
+      }
+    }
+  }
+  return data;
 }
