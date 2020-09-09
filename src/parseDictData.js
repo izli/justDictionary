@@ -46,7 +46,6 @@ function dictParseSSEQElem(sseqElement, origE) {
 
 function parseSubSSEQElem(subSseqElement) {
   if (subSseqElement[0] === 'bs') {
-    // debugger;
     return parseSenseElement(subSseqElement);
   }
 
@@ -58,14 +57,12 @@ function parseSubSSEQElem(subSseqElement) {
     let both = parseSenseElement(subSseqElement);
     return both;
   } else {
-    // debugger;
     let both = subSseqElement.map((pseqElem) => parseAllPseq(pseqElem));
     return both;
   }
 }
 
 function parseAllPseq(pseqElem) {
-  // debugger;
   if (pseqElem === 'pseq') {
     return;
   }
@@ -95,7 +92,6 @@ function dictParseLong(longElement) {
 }
 
 function parseSenseElement(endElement) {
-  // debugger;
   let example = '';
   if (endElement[0] === 'bs') {
     let desc = endElement[1].sense.dt[0][1];
@@ -119,7 +115,6 @@ function mapAllExamples(endExElement) {
 }
 
 export function removeUndefined(data) {
-  debugger;
   let firstLevels = data.length;
   for (let i = 0; i < firstLevels; i++) {
     let secondLevels = data[i].values.length;

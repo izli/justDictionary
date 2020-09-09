@@ -7,7 +7,6 @@ export function PrintDictionary(props) {
   //   let returnValue = wholeForLoop(props.data);
 
   for (let type = 0; type < props.data.length; type++) {
-    debugger;
     if (
       Array.isArray(props.data[type].values[0]) === false &&
       props.data[type].values.length === 1
@@ -106,7 +105,6 @@ function handleSubSubArrays(subSubLevelArray, allJSX) {
 
 function handle3SubArrays(sub3LevelArray, allJSX) {
   for (let sub3Level = 0; sub3Level < sub3LevelArray.length; sub3Level++) {
-    debugger;
     if (Array.isArray(sub3LevelArray[sub3Level])) {
       let sub4LevelArray = sub3LevelArray[sub3Level];
       //   let temp = handle3SubArrays(sub3LevelArray, allJSX);

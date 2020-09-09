@@ -6,7 +6,7 @@ import { PrintDictionary } from './PrintDictionary';
 import { cleanParsedData, removeUndefined } from './cleanParsedData';
 
 const createStyles = makeStyles(() => ({
-  container: {
+  resultContainer: {
     display: 'flex',
     marginTop: '2em',
   },
@@ -38,11 +38,9 @@ export function useGetDictionary(searchWord, setDictResults) {
 
 export function SearchResults(props) {
   const myStyles = createStyles();
-
   const [dictResults, setDictResults] = useState([]);
 
   useGetDictionary(props.searchWord, setDictResults);
-  debugger;
   if (dictResults.length > 0) {
     let dictData = parseDictData(dictResults, props.searchWord);
     dictData = cleanParsedData(dictData);
@@ -52,19 +50,13 @@ export function SearchResults(props) {
     console.log('dictData: ', dictData);
 
     return (
-      <div className={myStyles.container}>
-        <div className={myStyles.subContainer}>
-          <PrintDictionary data={dictData}></PrintDictionary>
-        </div>
+      <div className={myStyles.resultContainer}>
+        <PrintDictionary data={dictData}></PrintDictionary>
       </div>
     );
   } else {
     return (
-      <div>
-        <div className={myStyles.subContainer}>Nothing in thesaurus</div>
-
-        <div className={myStyles.subContainer}>Nothing in dictionary</div>
-      </div>
+      <div className={myStyles.resultContainer}>Nothing in dictionary</div>
     );
   }
   // return <Typography variant="body1">This is the thesaurus div</Typography>;

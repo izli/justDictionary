@@ -23,7 +23,6 @@ function dictParseValues(item) {
 }
 
 function dictParseDefs(element) {
-  // debugger;
   let tempDef = element.sseq.map((element3) => dictParseDesc(element3));
   return tempDef;
 }
