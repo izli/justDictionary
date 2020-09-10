@@ -28,16 +28,26 @@ const createStyles = makeStyles(() => ({
     fontWeight: 'light',
     fontSize: '14px',
   },
-  tempContainer: {
-    marginTop: '24px',
-    marginBottom: '24px',
+  tempContainerVal: {
+    marginTop: '32px',
+    marginBottom: '32px',
+  },
+  tempContainerSub: {
+    marginTop: '32px',
+    marginBottom: '32px',
+  },
+  tempContainerSubSub: {
+    marginTop: '32px',
+    marginBottom: '32px',
+  },
+  tempContainer3Sub: {
+    marginTop: '32px',
+    marginBottom: '32px',
   },
 }));
 
 export function PrintDictionary(props) {
   const myStyles = createStyles();
-  let allJSX = [];
-  //   let returnValue = wholeForLoop(props.data);
 
   for (let typeVal = 0; typeVal < props.data.length; typeVal++) {
     if (
@@ -45,7 +55,7 @@ export function PrintDictionary(props) {
       props.data[typeVal].values.length === 1
     ) {
       let isFirst = handleSn(props.data[typeVal].values, 0);
-      allJSX.push(
+      return (
         <div className={myStyles.descExContainer}>
           <Typography
             className={isFirst ? myStyles.descLevel1 : myStyles.descLevel2}
@@ -60,21 +70,17 @@ export function PrintDictionary(props) {
         </div>
       );
     } else {
+      // debugger;
       let allValuesArrays = props.data[typeVal].values;
-      valuesHasArrays(allValuesArrays, allJSX, myStyles);
+      let allRes = valuesHasArrays(allValuesArrays, myStyles);
+      return <div>{allRes}</div>;
     }
   }
-
-  return (
-    // <div>
-    //   <div>{allJSX}</div>
-    //   <pre>{JSON.stringify(props.data, null, 2)}</pre>
-    // </div>
-    <div>{allJSX}</div>
-  );
 }
 
-function valuesHasArrays(allValuesArrays, allJSX, myStyles) {
+function valuesHasArrays(allValuesArrays, myStyles) {
+  // debugger;
+  let valResAr = [];
   for (
     let valuesLevel = 0;
     valuesLevel < allValuesArrays.length;
@@ -82,16 +88,14 @@ function valuesHasArrays(allValuesArrays, allJSX, myStyles) {
   ) {
     if (Array.isArray(allValuesArrays[valuesLevel])) {
       let subLevelArray = allValuesArrays[valuesLevel];
-      // handleSubArrays(subLevelArray, allJSX, myStyles);
-      allJSX.push(
-        <div className={myStyles.tempContainer}>
-          {handleSubArrays(subLevelArray, allJSX, myStyles)}
-        </div>
+      let subArRes = handleSubArrays(subLevelArray, myStyles);
+      valResAr.push(
+        <div className={myStyles.tempContainerVal}>{subArRes}</div>
       );
     } else {
       //No subArrays
       let isFirst = handleSn(allValuesArrays, valuesLevel);
-      allJSX.push(
+      valResAr.push(
         <div className={myStyles.descExContainer}>
           <Typography
             className={isFirst ? myStyles.descLevel1 : myStyles.descLevel2}
@@ -107,23 +111,22 @@ function valuesHasArrays(allValuesArrays, allJSX, myStyles) {
       );
     }
   }
+  return valResAr;
 }
 
-function handleSubArrays(subLevelArray, allJSX, myStyles) {
+function handleSubArrays(subLevelArray, myStyles) {
+  let subArRes = [];
   for (let subLevel = 0; subLevel < subLevelArray.length; subLevel++) {
     if (Array.isArray(subLevelArray[subLevel])) {
       let subSubLevelArray = subLevelArray[subLevel];
-      // handleSubSubArrays(subSubLevelArray, allJSX, myStyles);
-      allJSX.push(
-        <div className={myStyles.tempContainer}>
-          THIS IS TEMP TEXT
-          {handleSubSubArrays(subSubLevelArray, allJSX, myStyles)}
-        </div>
+      let subSubRes = handleSubSubArrays(subSubLevelArray, myStyles);
+      subArRes.push(
+        <div className={myStyles.tempContainerSub}>{subSubRes}</div>
       );
     } else {
       //No subArrays
       let isFirst = handleSn(subLevelArray, subLevel);
-      allJSX.push(
+      subArRes.push(
         <div className={myStyles.descExContainer}>
           <Typography
             className={isFirst ? myStyles.descLevel1 : myStyles.descLevel2}
@@ -139,9 +142,11 @@ function handleSubArrays(subLevelArray, allJSX, myStyles) {
       );
     }
   }
+  return subArRes;
 }
 
-function handleSubSubArrays(subSubLevelArray, allJSX, myStyles) {
+function handleSubSubArrays(subSubLevelArray, myStyles) {
+  let subSubResAr = [];
   for (
     let subsubLevel = 0;
     subsubLevel < subSubLevelArray.length;
@@ -149,15 +154,13 @@ function handleSubSubArrays(subSubLevelArray, allJSX, myStyles) {
   ) {
     if (Array.isArray(subSubLevelArray[subsubLevel])) {
       let sub3LevelArray = subSubLevelArray[subsubLevel];
-      // handle3SubArrays(sub3LevelArray, allJSX, myStyles);
-      allJSX.push(
-        <div className={myStyles.tempContainer}>
-          {handle3SubArrays(sub3LevelArray, allJSX, myStyles)}
-        </div>
+      let sub3Res = handle3SubArrays(sub3LevelArray, myStyles);
+      subSubResAr.push(
+        <div className={myStyles.tempContainerSubSub}>{sub3Res}</div>
       );
     } else {
       let isFirst = handleSn(subSubLevelArray, subsubLevel);
-      allJSX.push(
+      subSubResAr.push(
         <div className={myStyles.descExContainer}>
           <Typography
             className={isFirst ? myStyles.descLevel1 : myStyles.descLevel2}
@@ -174,18 +177,18 @@ function handleSubSubArrays(subSubLevelArray, allJSX, myStyles) {
       );
     }
   }
+  return subSubResAr;
 }
 
-function handle3SubArrays(sub3LevelArray, allJSX, myStyles) {
+function handle3SubArrays(sub3LevelArray, myStyles) {
+  let sub3ArResAr = [];
   for (let sub3Level = 0; sub3Level < sub3LevelArray.length; sub3Level++) {
     if (Array.isArray(sub3LevelArray[sub3Level])) {
-      // let sub4LevelArray = sub3LevelArray[sub3Level];
-      // //   let temp = handle3SubArrays(sub3LevelArray, allJSX);
       console.log('TOO DEEP!');
-      allJSX.push(<div>TOO DEEP</div>);
+      return <div>TOO DEEP</div>;
     } else {
       let isFirst = handleSn(sub3LevelArray, sub3Level);
-      allJSX.push(
+      sub3ArResAr.push(
         <div className={myStyles.descExContainer}>
           <Typography
             className={isFirst ? myStyles.descLevel1 : myStyles.descLevel2}
@@ -201,6 +204,7 @@ function handle3SubArrays(sub3LevelArray, allJSX, myStyles) {
       );
     }
   }
+  return sub3ArResAr;
 }
 
 function handleSn(array, position) {
