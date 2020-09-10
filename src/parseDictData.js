@@ -94,55 +94,64 @@ function dictParseLong(longElement) {
 function parseSenseElement(endElement) {
   let example = '';
   if (endElement[0] === 'bs') {
-    let desc = endElement[1].sense.dt[0][1];
+    let sn = endElement[1].sense.sn;
+    let desc = handleDesc(endElement[1].sense.dt);
+    // let desc = endElement[1].sense.dt[0][1];
     if (endElement[1].sense.dt.length > 1) {
       example = endElement[1].sense.dt[1][1].t;
     }
-    return { desc, example };
+    return { desc, example, sn };
   }
 
-  let desc = endElement[1].dt[0][1];
+  // let desc = endElement[1].dt[0][1];
+  let desc = handleDesc(endElement[1].dt);
+  let syns = handleSynonyms(endElement[1].dt);
+  let sn = endElement[1].sn;
   if (endElement[1].dt.length > 1) {
     example = endElement[1].dt[1][1].map((endExElement) =>
       mapAllExamples(endExElement)
     );
   }
-  return { desc, example };
+  return { desc, example, sn, syns };
 }
 
 function mapAllExamples(endExElement) {
-  return endExElement.t;
+  let text = endExElement.t;
+  let notAcceptable = '({bc})|({wi})|{/wi}|{sx.*?}';
+  let regex = new RegExp(notAcceptable, 'g');
+  if (text !== undefined) {
+    text = text.replace(regex, '');
+    text = text.charAt(0).toUpperCase + text.slice(1);
+  } else {
+    text = '';
+  }
+  return text;
 }
 
-export function removeUndefined(data) {
-  let firstLevels = data.length;
-  for (let i = 0; i < firstLevels; i++) {
-    let secondLevels = data[i].values.length;
+function handleDesc(element) {
+  let text = element[0][1];
+  let notAcceptable = '({bc})|({wi})|{/wi}|{sx.*?}';
+  let regex = new RegExp(notAcceptable, 'g');
+  text = text.replace(regex, '');
+  let italicizeBeginning = '({it}';
+  let italicizeEnd = '{/it})';
+  text = text.replace(italicizeBeginning, '[');
+  text = text.replace(italicizeEnd, ']');
 
-    for (let j = 0; j < secondLevels; j++) {
-      //Might not be needed
-      if (data[i].values[0] === undefined) {
-        data[i].values.shift();
-      }
-      let thirdLevels = data[i].values[j].length;
+  return text;
+}
 
-      for (let k = 0; k < thirdLevels; k++) {
-        // console.log('print third level k', data[i].values[j][k]);
-        //Might not be needed
-        if (data[i].values[j][0] === undefined) {
-          data[i].values[j].shift();
-        }
-
-        let fourthLevels = data[i].values[j][k].length;
-
-        for (let l = 0; l < fourthLevels; l++) {
-          //remove first undefined
-          if (data[i].values[j][k][0] === undefined) {
-            data[i].values[j][k].shift();
-          }
-        }
-      }
-    }
+function handleSynonyms(element) {
+  let notAcceptable = '{sx.*?}';
+  let regex = new RegExp(notAcceptable, 'g');
+  let text = element[0][1];
+  let syns = text.match(regex);
+  if (syns !== null) {
+    let synReplace = '({sx\\|)|(\\|\\|})';
+    let regex2 = new RegExp(synReplace, 'g');
+    syns = syns.map((syn) => syn.replace(regex2, ''));
+  } else {
+    syns = [];
   }
-  return data;
+  return syns;
 }
