@@ -47,3 +47,24 @@ export function removeUndefined(data) {
   }
   return data;
 }
+
+// export function removeFormatting(data) {
+//   console.log(data);
+//   if (data.length > 0) {
+//     data.map((mainElement) => handleNextLevel(mainElement.values));
+//   }
+//   return data;
+// }
+
+// function handleNextLevel(parentArray) {
+//   if (Array.isArray(parentArray) && parentArray.length > 0) {
+//     parentArray.map((childElement) => handleNextLevel(childElement));
+//   }
+
+//   if (parentArray.desc !== undefined) {
+//     console.log('Parent Array', parentArray.desc);
+//     let acceptable = '({bc})|({wi})|{/wi}';
+//     let regex = new RegExp(acceptable, 'g');
+//     parentArray.desc = parentArray.desc.replace(regex, '');
+//   }
+// }
