@@ -3,11 +3,31 @@ import React from 'react';
 import { Typography, makeStyles } from '@material-ui/core';
 
 const createStyles = makeStyles(() => ({
+  byTypeContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    marginBottom: '32px',
+  },
+  allValuesAr: {
+    display: 'flex',
+    flexDirection: 'column',
+  },
+  typeClass: {
+    display: 'flex',
+    paddingRight: '64px',
+    fontFamily: 'Merriweather',
+    fontWeight: '600',
+    fontSize: '24px',
+  },
+  level2Container: {
+    display: 'flex',
+    flexDirection: 'column',
+  },
   descExContainer: {
     display: 'flex',
     flexWrap: 'wrap',
     flexDirection: 'column',
-    marginTop: '16px',
+    // marginTop: '16px',
     marginBottom: '16px',
   },
   descLevel1: {
@@ -20,62 +40,80 @@ const createStyles = makeStyles(() => ({
     display: 'flex',
     color: 'black',
     fontSize: '14px',
+    fontFamily: 'Raleway',
+    marginLeft: '16px',
   },
-  example: {
+  exampleLv1: {
     display: 'flex',
     color: 'grey',
     fontFamily: 'Lato',
     fontWeight: 'light',
     fontSize: '14px',
   },
-  tempContainerVal: {
-    marginTop: '32px',
+  exampleLv2: {
+    display: 'flex',
+    color: 'grey',
+    fontFamily: 'Lato',
+    fontWeight: 'light',
+    fontSize: '14px',
+    marginLeft: '16px',
+  },
+  containerVal: {
     marginBottom: '32px',
   },
-  tempContainerSub: {
-    marginTop: '32px',
+  subContainer: {
     marginBottom: '32px',
   },
-  tempContainerSubSub: {
-    marginTop: '32px',
+  subSubContainer: {
     marginBottom: '32px',
   },
-  tempContainer3Sub: {
-    marginTop: '32px',
-    marginBottom: '32px',
-  },
+  // sub3Container: {
+  //   marginBottom: '32px',
+  // },
 }));
 
 export function PrintDictionary(props) {
   const myStyles = createStyles();
-
+  let allValuesArray = [];
+  debugger;
   for (let typeVal = 0; typeVal < props.data.length; typeVal++) {
     if (
       Array.isArray(props.data[typeVal].values[0]) === false &&
       props.data[typeVal].values.length === 1
     ) {
       let isFirst = handleSn(props.data[typeVal].values, 0);
-      return (
+      allValuesArray.push(
         <div className={myStyles.descExContainer}>
           <Typography
             className={isFirst ? myStyles.descLevel1 : myStyles.descLevel2}
           >
-            desc typeVal: {props.data[typeVal].values[0].desc}
+            {props.data[typeVal].values[0].desc}
           </Typography>
           {props.data[typeVal].values[0].example.length > 0 && (
-            <Typography className={myStyles.example}>
-              example typeVal: {props.data[typeVal].values[0].example}
+            <Typography
+              className={isFirst ? myStyles.exampleLv1 : myStyles.exampleLv2}
+            >
+              {props.data[typeVal].values[0].example}
             </Typography>
           )}
         </div>
       );
+      return <div className={myStyles.allValuesAr}>{allValuesArray}</div>;
     } else {
-      // debugger;
-      let allValuesArrays = props.data[typeVal].values;
-      let allRes = valuesHasArrays(allValuesArrays, myStyles);
-      return <div>{allRes}</div>;
+      let allRes = valuesHasArrays(props.data[typeVal].values, myStyles);
+      let type = props.data[typeVal].type;
+      type = type.charAt(0).toUpperCase() + type.slice(1);
+      allValuesArray.push(
+        <div className={myStyles.byTypeContainer}>
+          <Typography className={myStyles.typeClass}>Type: {type}</Typography>
+          <div className={myStyles.level2Container}>{allRes}</div>
+        </div>
+      );
     }
+    debugger;
   }
+  debugger;
+  return <div className={myStyles.allValuesAr}>{allValuesArray}</div>;
 }
 
 function valuesHasArrays(allValuesArrays, myStyles) {
@@ -89,9 +127,7 @@ function valuesHasArrays(allValuesArrays, myStyles) {
     if (Array.isArray(allValuesArrays[valuesLevel])) {
       let subLevelArray = allValuesArrays[valuesLevel];
       let subArRes = handleSubArrays(subLevelArray, myStyles);
-      valResAr.push(
-        <div className={myStyles.tempContainerVal}>{subArRes}</div>
-      );
+      valResAr.push(<div className={myStyles.containerVal}>{subArRes}</div>);
     } else {
       //No subArrays
       let isFirst = handleSn(allValuesArrays, valuesLevel);
@@ -100,17 +136,20 @@ function valuesHasArrays(allValuesArrays, myStyles) {
           <Typography
             className={isFirst ? myStyles.descLevel1 : myStyles.descLevel2}
           >
-            desc Value Level: {allValuesArrays[valuesLevel].desc}
+            {allValuesArrays[valuesLevel].desc}
           </Typography>
           {allValuesArrays[valuesLevel].example.length > 0 && (
-            <Typography className={myStyles.example}>
-              example Value Level: {allValuesArrays[valuesLevel].example}
+            <Typography
+              className={isFirst ? myStyles.exampleLv1 : myStyles.exampleLv2}
+            >
+              {allValuesArrays[valuesLevel].example}
             </Typography>
           )}
         </div>
       );
     }
   }
+  // debugger;
   return valResAr;
 }
 
@@ -120,9 +159,7 @@ function handleSubArrays(subLevelArray, myStyles) {
     if (Array.isArray(subLevelArray[subLevel])) {
       let subSubLevelArray = subLevelArray[subLevel];
       let subSubRes = handleSubSubArrays(subSubLevelArray, myStyles);
-      subArRes.push(
-        <div className={myStyles.tempContainerSub}>{subSubRes}</div>
-      );
+      subArRes.push(<div className={myStyles.subContainer}>{subSubRes}</div>);
     } else {
       //No subArrays
       let isFirst = handleSn(subLevelArray, subLevel);
@@ -131,17 +168,20 @@ function handleSubArrays(subLevelArray, myStyles) {
           <Typography
             className={isFirst ? myStyles.descLevel1 : myStyles.descLevel2}
           >
-            SubLevelDesc: {subLevel} {subLevelArray[subLevel].desc}
+            {subLevelArray[subLevel].desc}
           </Typography>
           {subLevelArray[subLevel].example.length > 0 && (
-            <Typography className={myStyles.example}>
-              SubLevelEx: {subLevel} {subLevelArray[subLevel].example}
+            <Typography
+              className={isFirst ? myStyles.exampleLv1 : myStyles.exampleLv2}
+            >
+              {subLevelArray[subLevel].example}
             </Typography>
           )}
         </div>
       );
     }
   }
+  // debugger;
   return subArRes;
 }
 
@@ -156,7 +196,7 @@ function handleSubSubArrays(subSubLevelArray, myStyles) {
       let sub3LevelArray = subSubLevelArray[subsubLevel];
       let sub3Res = handle3SubArrays(sub3LevelArray, myStyles);
       subSubResAr.push(
-        <div className={myStyles.tempContainerSubSub}>{sub3Res}</div>
+        <div className={myStyles.subSubContainer}>{sub3Res}</div>
       );
     } else {
       let isFirst = handleSn(subSubLevelArray, subsubLevel);
@@ -165,11 +205,12 @@ function handleSubSubArrays(subSubLevelArray, myStyles) {
           <Typography
             className={isFirst ? myStyles.descLevel1 : myStyles.descLevel2}
           >
-            subSubLevelDesc: {subsubLevel} {subSubLevelArray[subsubLevel].desc}
+            {subSubLevelArray[subsubLevel].desc}
           </Typography>
           {subSubLevelArray[subsubLevel].example.length > 0 && (
-            <Typography className={myStyles.example}>
-              subSubLevelEx: {subsubLevel}{' '}
+            <Typography
+              className={isFirst ? myStyles.exampleLv1 : myStyles.exampleLv2}
+            >
               {subSubLevelArray[subsubLevel].example}
             </Typography>
           )}
@@ -177,6 +218,7 @@ function handleSubSubArrays(subSubLevelArray, myStyles) {
       );
     }
   }
+  // debugger;
   return subSubResAr;
 }
 
@@ -185,6 +227,7 @@ function handle3SubArrays(sub3LevelArray, myStyles) {
   for (let sub3Level = 0; sub3Level < sub3LevelArray.length; sub3Level++) {
     if (Array.isArray(sub3LevelArray[sub3Level])) {
       console.log('TOO DEEP!');
+      debugger;
       return <div>TOO DEEP</div>;
     } else {
       let isFirst = handleSn(sub3LevelArray, sub3Level);
@@ -193,11 +236,13 @@ function handle3SubArrays(sub3LevelArray, myStyles) {
           <Typography
             className={isFirst ? myStyles.descLevel1 : myStyles.descLevel2}
           >
-            sub3Level: {sub3Level} desc {sub3LevelArray[sub3Level].desc}
+            {sub3LevelArray[sub3Level].desc}
           </Typography>
           {sub3LevelArray[sub3Level].example.length > 1 && (
-            <Typography className={myStyles.example}>
-              example sub3Level: {sub3LevelArray[sub3Level].example}
+            <Typography
+              className={isFirst ? myStyles.exampleLv1 : myStyles.exampleLv2}
+            >
+              {sub3LevelArray[sub3Level].example}
             </Typography>
           )}
         </div>
