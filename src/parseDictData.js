@@ -116,16 +116,32 @@ function parseSenseElement(endElement) {
 }
 
 function mapAllExamples(endExElement) {
-  let text = endExElement.t;
-  let notAcceptable = '({bc})|({wi})|{/wi}|{sx.*?}';
-  let regex = new RegExp(notAcceptable, 'g');
-  if (text !== undefined) {
-    text = text.replace(regex, '');
-    text = text.charAt(0).toUpperCase + text.slice(1);
+  let origText = endExElement.t;
+  let italicsRule = '{it}.*?}|{wi}.*?}';
+  let regItalics = new RegExp(italicsRule, 'g');
+  let notAccRule = '({bc})|({wi})|{/wi}|{sx.*?}|{it|/it}';
+  let notAccReg = new RegExp(notAccRule, 'g');
+  if (origText !== undefined) {
+    let matchArr = origText.match(regItalics);
+    if (matchArr.length > 0) {
+      //Handle italics
+      for (let i = 0; i < matchArr.length; i++) {
+        let word = matchArr[i];
+        let notOkReg = '({bc})|({wi})|{/wi}|{sx.*?}|{it|/it}';
+        let regex = new RegExp(notOkReg, 'g');
+        word = word.replace(regex, '');
+        // word = word.italics(); INCLUDE THIS if you want <i>word</i>
+        let parsedWord = origText.replace(regItalics, word);
+        parsedWord = parsedWord.charAt(0).toUpperCase() + parsedWord.slice(1);
+        return parsedWord;
+      }
+    }
+    origText = origText.replace(notAccReg, '');
+    origText = origText.charAt(0).toUpperCase() + origText.slice(1);
   } else {
-    text = '';
+    origText = '';
+    return origText;
   }
-  return text;
 }
 
 function handleDesc(element) {
@@ -137,7 +153,7 @@ function handleDesc(element) {
   let italicizeEnd = '{/it})';
   text = text.replace(italicizeBeginning, '[');
   text = text.replace(italicizeEnd, ']');
-
+  text = text.charAt(0).toUpperCase() + text.slice(1);
   return text;
 }
 
