@@ -1,24 +1,17 @@
 import React, { useState } from 'react';
 import { SearchResults } from './SearchResults.js';
 import { SearchButton } from './SearchButton.js';
-// import { createMuiTheme } from 'material-ui/core/styles';
-// import { MuiThemeProvider } from 'material-ui/styles';
+import { makeStyles } from '@material-ui/core/styles';
 
-// const theme = createMuiTheme({
-//   typography: {
-//     subtitle1: {
-//       fontSize: 12,
-//     },
-//     body1: {
-//       fontWeight: 500,
-//     },
-//     button: {
-//       fontStyle: 'italic',
-//     },
-//   },
-// });
-
+const createStyles = makeStyles(() => ({
+  classApp: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
+}));
 function App() {
+  const myStyles = createStyles();
   const [searchWord, setSearchWord] = useState('');
 
   // function onSetSearchWord(textValue) {
@@ -27,7 +20,7 @@ function App() {
   // }
 
   return (
-    <div className="App">
+    <div className={myStyles.classApp}>
       {/* <CreateHeader /> */}
       <SearchButton setSearchWord={setSearchWord} />
       <SearchResults searchWord={searchWord} />
