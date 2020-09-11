@@ -14,6 +14,7 @@ const createStyles = makeStyles(() => ({
     display: 'flex',
     marginTop: '2em',
     justifyContent: 'center',
+    width: '60%',
   },
   dictResults: {
     width: '60em',
@@ -46,9 +47,7 @@ export function SearchResults(props) {
 
     return (
       <div className={myStyles.resultContainer}>
-        <div className={myStyles.dictResults}>
-          <PrintDictionary data={dictData}></PrintDictionary>
-        </div>
+        <PrintDictionary data={dictData}></PrintDictionary>
       </div>
     );
   } else {
