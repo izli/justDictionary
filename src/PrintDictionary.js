@@ -1,12 +1,29 @@
 import React from 'react';
 // import { makeStyles } from '@material-ui/core/styles';
 import { Typography, makeStyles } from '@material-ui/core';
+import {
+  createMuiTheme,
+  ThemeProvider,
+  responsiveFontSizes,
+} from '@material-ui/core/styles';
+
+let typoTheme = createMuiTheme();
+typoTheme = responsiveFontSizes(typoTheme);
+
+let themeUI = createMuiTheme({
+  display: 'flex',
+  typography: {
+    fontFamily: 'Raleway',
+    color: 'black',
+  },
+});
 
 const createStyles = makeStyles(() => ({
   byTypeContainer: {
     display: 'flex',
     flexDirection: 'row',
     marginBottom: '32px',
+    width: '100%',
   },
   allValuesAr: {
     display: 'flex',
@@ -14,14 +31,16 @@ const createStyles = makeStyles(() => ({
   },
   typeClass: {
     display: 'flex',
-    paddingRight: '64px',
     fontFamily: 'Merriweather',
     fontWeight: '600',
     fontSize: '24px',
+    marginTop: '16px',
+    minWidth: '8em',
   },
   level2Container: {
     display: 'flex',
     flexDirection: 'column',
+    paddingTop: '0.5em',
   },
   descExContainer: {
     display: 'flex',
@@ -29,37 +48,44 @@ const createStyles = makeStyles(() => ({
     flexDirection: 'column',
     marginBottom: '16px',
   },
+  descSnContainer: {
+    display: 'flex',
+    flexWrap: 'wrap',
+    flexDirection: 'row',
+  },
   descLevel1: {
     display: 'flex',
-    color: 'black',
-    fontFamily: 'Raleway',
-    fontSize: '16px',
+    marginTop: '16px',
+    fontWeight: '500',
+    flex: '1',
   },
   descLevel2: {
     display: 'flex',
-    color: 'black',
-    fontSize: '14px',
-    fontFamily: 'Raleway',
-    marginLeft: '16px',
+    flex: '1',
   },
   exampleLv1: {
     display: 'flex',
-    color: 'grey',
     fontFamily: 'Lato',
-    fontWeight: 'light',
-    fontSize: '14px',
+    fontWeight: '300',
+    color: 'grey',
+    width: '100%',
+    paddingLeft: '2.5em',
   },
   exampleLv2: {
     display: 'flex',
-    color: 'grey',
+    paddingLeft: '4.5em',
     fontFamily: 'Lato',
-    fontWeight: 'light',
-    fontSize: '14px',
-    marginLeft: '16px',
+    fontWeight: '300',
+    color: 'grey',
+    width: '100%',
   },
-  containerVal: {
-    marginBottom: '32px',
+  snFirst: {
+    display: 'flex',
+    marginTop: '16px',
+    fontWeight: '500',
+    width: '2em',
   },
+  sn: { display: 'flex', fontWeight: '500', width: '2em', paddingLeft: '2em' },
 }));
 
 export function PrintDictionary(props) {
@@ -70,33 +96,31 @@ export function PrintDictionary(props) {
       Array.isArray(props.data[typeVal].values[0]) === false &&
       props.data[typeVal].values.length === 1
     ) {
-      let isFirst = handleSn(props.data[typeVal].values, 0);
-      allValuesArray.push(
-        <div className={myStyles.descExContainer}>
-          <Typography
-            className={isFirst ? myStyles.descLevel1 : myStyles.descLevel2}
-          >
-            {props.data[typeVal].values[0].desc}
-          </Typography>
-          {props.data[typeVal].values[0].example.length > 0 && (
-            <Typography
-              className={isFirst ? myStyles.exampleLv1 : myStyles.exampleLv2}
-            >
-              {props.data[typeVal].values[0].example}
-            </Typography>
-          )}
-        </div>
+      //No subarrays
+      let isFirst = checkIsFirst(props.data[typeVal].values, 0);
+      let divToPush = pushContains(
+        props.data[typeVal].values,
+        0,
+        isFirst,
+        myStyles
       );
+      allValuesArray.push(divToPush);
       return <div className={myStyles.allValuesAr}>{allValuesArray}</div>;
     } else {
       let allRes = recursiveHandling(props.data[typeVal].values, myStyles);
       let type = props.data[typeVal].type;
       type = type.charAt(0).toUpperCase() + type.slice(1);
       allValuesArray.push(
-        <div className={myStyles.byTypeContainer}>
-          <Typography className={myStyles.typeClass}>Type: {type}</Typography>
-          <div className={myStyles.level2Container}>{allRes}</div>
-        </div>
+        <ThemeProvider theme={typoTheme}>
+          <ThemeProvider theme={themeUI}>
+            <div className={myStyles.byTypeContainer}>
+              <Typography className={myStyles.typeClass}>
+                Type: {type}
+              </Typography>
+              <div className={myStyles.level2Container}>{allRes}</div>
+            </div>
+          </ThemeProvider>
+        </ThemeProvider>
       );
     }
   }
@@ -106,36 +130,63 @@ export function PrintDictionary(props) {
 function recursiveHandling(array, myStyles) {
   let resultArray = [];
   for (let i = 0; i < array.length; i++) {
+    let isFirst = checkIsFirst(array, i);
     if (Array.isArray(array[i])) {
       let subArray = array[i];
       let subArrayRes = recursiveHandling(subArray, myStyles);
-      resultArray.push(
-        <div className={myStyles.containerVal}>{subArrayRes}</div>
-      );
+
+      if (isFirst) {
+        resultArray.push(
+          <div className={myStyles.containerVal}>{subArrayRes}</div>
+        );
+      } else {
+        resultArray.push(subArrayRes);
+      }
     } else {
-      let isFirst = handleSn(array, i);
-      resultArray.push(
-        <div className={myStyles.descExContainer}>
-          <Typography
-            className={isFirst ? myStyles.descLevel1 : myStyles.descLevel2}
-          >
-            {array[i].desc}
-          </Typography>
-          {array[i].example.length > 0 && (
-            <Typography
-              className={isFirst ? myStyles.exampleLv1 : myStyles.exampleLv2}
-            >
-              {array[i].example}
-            </Typography>
-          )}
-        </div>
-      );
+      //No subArrays
+      if (isFirst) {
+        let divToPush = pushContains(array, i, isFirst, myStyles);
+        resultArray.push(divToPush);
+      } else {
+        let divToPush = pushContains(array, i, isFirst, myStyles);
+        resultArray.push(divToPush);
+      }
     }
   }
   return resultArray;
 }
 
-function handleSn(array, position) {
+function pushContains(array, i, isFirst, myStyles) {
+  return (
+    <div className={myStyles.descExContainer}>
+      <div className={myStyles.descSnContainer}>
+        <Typography
+          variant={isFirst ? 'body1' : 'body2'}
+          className={isFirst ? myStyles.snFirst : myStyles.sn}
+        >
+          {array[i].sn}
+        </Typography>
+        <Typography
+          // variant="body1"
+          variant={isFirst ? 'body1' : 'body2'}
+          className={isFirst ? myStyles.descLevel1 : myStyles.descLevel2}
+        >
+          {array[i].desc}
+        </Typography>
+      </div>
+      {array[i].example.length > 0 && (
+        <Typography
+          variant="body2"
+          className={isFirst ? myStyles.exampleLv1 : myStyles.exampleLv2}
+        >
+          {array[i].example}
+        </Typography>
+      )}
+    </div>
+  );
+}
+
+function checkIsFirst(array, position) {
   let acceptable = 'a|^\\d$';
   let regex = new RegExp(acceptable, 'g');
   if (array[position] === undefined || array[position].sn === undefined) {

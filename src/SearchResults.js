@@ -15,6 +15,7 @@ const createStyles = makeStyles(() => ({
     marginTop: '2em',
     justifyContent: 'center',
     width: '60%',
+    fontFamily: 'Raleway',
   },
   dictResults: {
     width: '60em',

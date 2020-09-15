@@ -95,6 +95,7 @@ function parseSenseElement(endElement) {
   let example = '';
   if (endElement[0] === 'bs') {
     let sn = endElement[1].sense.sn;
+    sn = handleSn(sn);
     let desc = handleDesc(endElement[1].sense.dt);
     // let desc = endElement[1].sense.dt[0][1];
     if (endElement[1].sense.dt.length > 1) {
@@ -105,8 +106,9 @@ function parseSenseElement(endElement) {
 
   // let desc = endElement[1].dt[0][1];
   let desc = handleDesc(endElement[1].dt);
-  let syns = handleSynonyms(endElement[1].dt);
   let sn = endElement[1].sn;
+  sn = handleSn(sn);
+  let syns = handleSynonyms(endElement[1].dt);
   if (endElement[1].dt.length > 1) {
     example = endElement[1].dt[1][1].map((endExElement) =>
       mapAllExamples(endExElement)
@@ -115,6 +117,15 @@ function parseSenseElement(endElement) {
   return { desc, example, sn, syns };
 }
 
+function handleSn(sn) {
+  if (sn !== undefined) {
+    let snRule = '\\s\\(\\d\\)';
+    let regSn = new RegExp(snRule, 'g');
+    sn = sn.replace(regSn, '');
+    return sn;
+  }
+  return;
+}
 function mapAllExamples(endExElement) {
   let origText = endExElement.t;
   let italicsRule = '{it}.*?}|{wi}.*?}';
