@@ -1,3 +1,9 @@
+# Dictionary app
+A simple React app done with Merriam-Webster's dictionary API. Project published at https://izli.github.io/justDictionary/
+
+
+
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
