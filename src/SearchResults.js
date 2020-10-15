@@ -38,19 +38,28 @@ export function SearchResults(props) {
         </div>
       );
     }
-    let dictData = parseDictData(dictResults, props.searchWord);
-    dictData = cleanParsedData(dictData);
-    dictData = removeUndefined(dictData);
-    // dictData = removeFormatting(dictData);
+    try {
+      let dictData = parseDictData(dictResults, props.searchWord);
+      dictData = cleanParsedData(dictData);
+      dictData = removeUndefined(dictData);
+      // dictData = removeFormatting(dictData);
 
-    //JSON.stringify(data);
-    console.log('dictData: ', dictData);
+      //JSON.stringify(data);
+      console.log('dictData: ', dictData);
 
-    return (
-      <div className={myStyles.resultContainer}>
-        <PrintDictionary data={dictData}></PrintDictionary>
-      </div>
-    );
+      return (
+        <div className={myStyles.resultContainer}>
+          <PrintDictionary data={dictData}></PrintDictionary>
+        </div>
+      );
+    } catch (error) {
+      return (
+        <div className={myStyles.resultContainer}>
+          Data structure of this word is not yet supported. Please try another
+          word, e.g. "design" or "umpire"{' '}
+        </div>
+      );
+    }
   } else {
     return (
       <div className={myStyles.resultContainer}>Nothing in dictionary</div>

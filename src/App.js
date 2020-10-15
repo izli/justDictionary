@@ -9,6 +9,15 @@ const createStyles = makeStyles(() => ({
     flexDirection: 'column',
     alignItems: 'center',
   },
+  header: {
+    display: 'flex',
+    marginTop: '2em',
+    marginBottom: '2em',
+    justifyContent: 'center',
+    width: '60%',
+    fontFamily: 'Monteserrat',
+    fontSize: '16px',
+  },
 }));
 function App() {
   const myStyles = createStyles();
@@ -22,6 +31,11 @@ function App() {
   return (
     <div className={myStyles.classApp}>
       {/* <CreateHeader /> */}
+      <div className={myStyles.header}>
+        This is a dictionary app using Merriam-Webster's api. Their data
+        structure is somewhat complicated so unfortunately not all words work
+        yet.
+      </div>
       <SearchButton setSearchWord={setSearchWord} />
       <SearchResults searchWord={searchWord} />
     </div>
