@@ -32,7 +32,7 @@ function App() {
     <div className={myStyles.classApp}>
       {/* <CreateHeader /> */}
       <div className={myStyles.header}>
-        This is a dictionary app using Merriam-Webster's api. Their data
+        This is a dictionary app using Merriam-Webster's API. Their data
         structure is somewhat complicated so unfortunately not all words work
         yet.
       </div>
