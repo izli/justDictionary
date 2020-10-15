@@ -1,14 +1,14 @@
 {
   "files": {
     "main.css": "/justDictionary/static/css/main.5ecd60fb.chunk.css",
-    "main.js": "/justDictionary/static/js/main.77bfecdd.chunk.js",
-    "main.js.map": "/justDictionary/static/js/main.77bfecdd.chunk.js.map",
+    "main.js": "/justDictionary/static/js/main.3647f8e7.chunk.js",
+    "main.js.map": "/justDictionary/static/js/main.3647f8e7.chunk.js.map",
     "runtime-main.js": "/justDictionary/static/js/runtime-main.4d7f8a58.js",
     "runtime-main.js.map": "/justDictionary/static/js/runtime-main.4d7f8a58.js.map",
     "static/js/2.a68c87d6.chunk.js": "/justDictionary/static/js/2.a68c87d6.chunk.js",
     "static/js/2.a68c87d6.chunk.js.map": "/justDictionary/static/js/2.a68c87d6.chunk.js.map",
     "index.html": "/justDictionary/index.html",
-    "precache-manifest.88ebb237bbe64e440aaf6fecffeda0d1.js": "/justDictionary/precache-manifest.88ebb237bbe64e440aaf6fecffeda0d1.js",
+    "precache-manifest.6268f86d825adeb5447ad2af333157a6.js": "/justDictionary/precache-manifest.6268f86d825adeb5447ad2af333157a6.js",
     "service-worker.js": "/justDictionary/service-worker.js",
     "static/css/main.5ecd60fb.chunk.css.map": "/justDictionary/static/css/main.5ecd60fb.chunk.css.map",
     "static/js/2.a68c87d6.chunk.js.LICENSE.txt": "/justDictionary/static/js/2.a68c87d6.chunk.js.LICENSE.txt"
@@ -17,6 +17,6 @@
     "static/js/runtime-main.4d7f8a58.js",
     "static/js/2.a68c87d6.chunk.js",
     "static/css/main.5ecd60fb.chunk.css",
-    "static/js/main.77bfecdd.chunk.js"
+    "static/js/main.3647f8e7.chunk.js"
   ]
 }
